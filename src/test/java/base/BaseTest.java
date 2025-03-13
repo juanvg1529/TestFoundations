@@ -12,6 +12,9 @@ import org.testng.annotations.Test;
 import pages.BasePage;
 import pages.HomePage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BaseTest {
 
 
@@ -24,10 +27,19 @@ public class BaseTest {
     public void SetUp(){
 
         ChromeOptions  options = new ChromeOptions();
-        options.setBinary("C:\\Program Files\\Google\\Chrome\\chrome.exe");
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("credentials_enable_service", false); // Deshabilita autocompletado de contraseñas
+        prefs.put("profile.password_manager_enabled", false); // Desactiva el gestor de contraseñas
+        options.setExperimentalOption("prefs", prefs);
+        options.addArguments("--disable-save-password-bubble"); // Desactiva la burbuja de "Guardar Contraseña"
+        options.addArguments("--disable-popup-blocking"); // Bloquea cualquier pop-up inesperado
+        options.addArguments("--disable-features=PasswordLeakDetection,AutofillServerCommunication");
+        options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         System.setProperty("selenium-manager.mode", "ALWAYS");
+
         driver = new ChromeDriver(options);
         goHome();
+        driver.manage().window().maximize();
         hooks =  new BasePage(driver);
         homePage = new HomePage(driver);
         var pageTitle = driver.getTitle();
@@ -35,9 +47,10 @@ public class BaseTest {
     }
     @BeforeMethod
     public void goHome(){
+
         driver.get("https://www.saucedemo.com");
     }
-    @AfterClass
+
     public void tearDown()
     {driver.quit();}
 
