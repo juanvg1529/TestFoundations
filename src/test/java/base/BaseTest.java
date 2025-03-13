@@ -50,7 +50,7 @@ public class BaseTest {
 
         driver.get("https://www.saucedemo.com");
     }
-
+    @AfterClass
     public void tearDown()
     {driver.quit();}
 

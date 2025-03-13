@@ -83,6 +83,7 @@ public class PurchaseSauceDemoTest extends BaseTest {
                 var subtotalValue=overViewPage.getSubtotalSumValue();
                 Assert.assertTrue(subtotalValue.contains(totalPrice), "the sum of the values is not the same as the subtotal");
                 var finishPage= overViewPage.clickFinishButton();
+                Assert.assertTrue(finishPage.retriveCompleteText().contains("Thank you for your order!"));
 
             }
 
